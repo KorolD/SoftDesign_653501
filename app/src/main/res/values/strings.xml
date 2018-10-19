@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Softy</string>
-    <string name="version">ok</string>
+    <string name="request_permissions_msg_header">Запрос прав</string>
+    <string name="request_permissions_msg">Данный тип прав необходим, чтобы узнать уникальный идентификатор вашего устройства.</string>
+    <string name="ok">OK</string>
+    <string name="no_permission">"Нет прав"</string>
+    <string name="about_formatable">Версия:\n%s\nIMEI:\n%s</string>
 </resources>

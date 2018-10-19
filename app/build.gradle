@@ -1,26 +1,26 @@
 apply plugin: 'com.android.application'
 
 ext {
-    def getGitCommitsAmount = { ->
+    def getGitVersion = { ->
         def stdout = new ByteArrayOutputStream()
         exec {
-            commandLine 'git', 'rev-list', '--branches', 'develop', '--count'
+            commandLine 'git', 'describe', '--tags'
             standardOutput = stdout
         }
-        return stdout.toString().toInteger()
+        return (stdout.toString().replace("\n", "-0")).split('[-.]').take(3)
     }
 
     def getVersionCode = { ->
-        def patch = getGitCommitsAmount()
-        return (Integer)release_count * 1000 + patch
+        def vers = getGitVersion()
+        return vers[0].toInteger()*1000000 + vers[1].toInteger() * 1000 + vers[2].toInteger()
     }
 
     def getVersionName = { ->
-        return '0.' + release_count + '.' + getGitCommitsAmount()
+        return getGitVersion().join('.')
     }
 
     def getName = { ->
-        return ('Softy_'+myVName)
+        return (app_name+"_"+myVName)
     }
 
     myVName = getVersionName()
@@ -98,15 +98,15 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
-task('increaseVersionCode') << {
-    def counter = Integer.parseInt(release_count) + 1
-    ant.propertyfile(file: "../gradle.properties") {
-        entry(key: "release_count", value: counter)
-    }
-}
-
-tasks.whenTaskAdded { task ->
-    if (task.name == 'generateFullReleaseBuildConfig') {
-        task.dependsOn 'increaseVersionCode'
-    }
-}
+//task('increaseVersionCode') << {
+//    def counter = Integer.parseInt(release_count) + 1
+//    ant.propertyfile(file: "../gradle.properties") {
+//        entry(key: "release_count", value: counter)
+//    }
+//}
+//
+//tasks.whenTaskAdded { task ->
+//    if (task.name == 'generateFullReleaseBuildConfig') {
+//        task.dependsOn 'increaseVersionCode'
+//    }
+//}

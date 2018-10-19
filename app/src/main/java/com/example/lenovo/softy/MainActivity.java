@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         TextView txt = findViewById(R.id.textView);
         TelephonyManager manager;
         manager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        txt.setText(String.format("Версия:\n%s\nIMEI:\n%s", BuildConfig.VERSION_NAME, manager.getDeviceId()));
+        txt.setText(getResources().getString(R.string.about_formatable, BuildConfig.VERSION_NAME, manager.getDeviceId()));
     }
 
     @Override
@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
                         final MainActivity main = this;
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setTitle("Запрос прав")
-                                .setMessage("Данный тип прав необходим, чтобы узнать уникальный идентификатор вашего устройства.")
-                                .setNegativeButton("ОК",
+                        builder.setTitle(R.string.request_permissions_msg_header)
+                                .setMessage(R.string.request_permissions_msg)
+                                .setNegativeButton(R.string.ok,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 dialog.cancel();
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         alert.show();
                     } else {
                         TextView txt = findViewById(R.id.textView);
-                        txt.setText("Нет прав");
+                        txt.setText(R.string.no_permission);
                     }
                 } else {
                     SetTxt();
